@@ -1,0 +1,126 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Placeholder Empty 1`] = `
+Array [
+  Object {
+    "apiVersion": "v1",
+    "kind": "Namespace",
+    "metadata": Object {
+      "labels": Object {
+        "managed-by": "cdk8s",
+      },
+      "name": "test-chart-ollama",
+      "namespace": "ollama",
+    },
+    "spec": Object {},
+  },
+  Object {
+    "apiVersion": "v1",
+    "kind": "PersistentVolumeClaim",
+    "metadata": Object {
+      "labels": Object {
+        "managed-by": "cdk8s",
+      },
+      "name": "test-chart-claim",
+      "namespace": "ollama",
+    },
+    "spec": Object {
+      "accessModes": Array [
+        "ReadWriteOncePod",
+      ],
+      "resources": Object {
+        "requests": Object {
+          "storage": "50Gi",
+        },
+      },
+      "storageClassName": "local-path",
+      "volumeMode": "Filesystem",
+    },
+  },
+  Object {
+    "apiVersion": "apps/v1",
+    "kind": "Deployment",
+    "metadata": Object {
+      "labels": Object {
+        "managed-by": "me",
+      },
+      "name": "test-chart-deploy",
+      "namespace": "ollama",
+    },
+    "spec": Object {
+      "minReadySeconds": 0,
+      "progressDeadlineSeconds": 600,
+      "replicas": 1,
+      "selector": Object {
+        "matchLabels": Object {
+          "cdk8s.io/metadata.addr": "test-chart-deploy-c8ea777c",
+        },
+      },
+      "strategy": Object {
+        "type": "Recreate",
+      },
+      "template": Object {
+        "metadata": Object {
+          "labels": Object {
+            "cdk8s.io/metadata.addr": "test-chart-deploy-c8ea777c",
+          },
+        },
+        "spec": Object {
+          "automountServiceAccountToken": false,
+          "containers": Array [
+            Object {
+              "image": "ollama/ollama",
+              "imagePullPolicy": "Always",
+              "name": "main",
+              "resources": Object {
+                "limits": Object {
+                  "cpu": "1",
+                },
+              },
+              "securityContext": Object {
+                "allowPrivilegeEscalation": false,
+                "privileged": false,
+                "readOnlyRootFilesystem": true,
+                "runAsNonRoot": false,
+              },
+              "volumeMounts": Array [
+                Object {
+                  "mountPath": "/root/.ollama",
+                  "name": "pvc-test-chart-claim",
+                },
+                Object {
+                  "mountPath": "/tmp",
+                  "name": "tmp",
+                },
+              ],
+            },
+          ],
+          "dnsPolicy": "ClusterFirst",
+          "hostNetwork": false,
+          "restartPolicy": "Always",
+          "runtimeClassName": "nvidia",
+          "securityContext": Object {
+            "fsGroupChangePolicy": "Always",
+            "runAsNonRoot": true,
+          },
+          "setHostnameAsFQDN": false,
+          "terminationGracePeriodSeconds": 30,
+          "volumes": Array [
+            Object {
+              "name": "pvc-test-chart-claim",
+              "persistentVolumeClaim": Object {
+                "claimName": "test-chart-claim",
+                "readOnly": false,
+              },
+            },
+            Object {
+              "emptyDir": Object {},
+              "name": "tmp",
+            },
+          ],
+        },
+      },
+    },
+  },
+]
+`;
